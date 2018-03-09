@@ -1,0 +1,1 @@
+# Run benchmark on each binary/script inside ./bin/
