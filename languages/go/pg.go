@@ -76,7 +76,7 @@ func main() {
 
 	t3 := benchmark(func() {
 		for i := 0; i < 1000; i++ {
-			db.Exec(query3, i, i)
+			db.Exec(query3, fmt.Sprintf("a test %d", i), i)
 		}
 	})
 
