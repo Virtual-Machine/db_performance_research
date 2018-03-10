@@ -10,6 +10,8 @@ dependencies:
   pq:
     github: abidon/crystal-pq
     branch: master
+  crust:
+    github: virtual-machine/crust
 
 crystal: 0.24.1
 
