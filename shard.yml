@@ -1,0 +1,16 @@
+name: db_performance_research
+version: 0.1.0
+
+authors:
+  - Virtual-Machine <darrelm.mailloux@gmail.com>
+
+dependencies:
+  pg:
+    github: will/crystal-pg
+  pq:
+    github: abidon/crystal-pq
+    branch: master
+
+crystal: 0.24.1
+
+license: MIT
