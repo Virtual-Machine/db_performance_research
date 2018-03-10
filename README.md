@@ -16,16 +16,16 @@ Python, Lua, Nim, Java, Kotlin, Swift, Javascript, Shell
 
 ### Official Target Comparisons
 
-C
+#### C
 - Suspected to be the fastest, chosen to represent the high water mark.
 
-Golang
+#### Golang
 - Fellow compiled language, chosen to represent a language expected to perform similar to Crystal.
 
-Crystal
+#### Crystal
 - Main focus of this research.
 
-Ruby
+#### Ruby
 - Interpreted language that is similar in syntax to Crystal, and the minimum standard of performance needed to meet expectations.
 
 
