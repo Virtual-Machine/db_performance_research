@@ -10,5 +10,5 @@ crystal build --release --no-debug -o bin/crystal-pq languages/crystal/main.cr
 # echo "Building Go binary"
 # go build -ldflags "-s -w" -o ../bin/golang-pg ../languages/go/pg.go
 
-# echo "Moving Ruby script"
-# cp ../languages/ruby/pg.rb ../bin/ruby-pg.rb
+echo "Moving Ruby script"
+cp languages/ruby/main.rb bin/ruby-pg.rb
