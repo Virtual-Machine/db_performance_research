@@ -1,0 +1,1 @@
+insert into contacts values ($1, $2)

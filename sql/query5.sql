@@ -1,0 +1,1 @@
+select name, age from contacts where age = $1

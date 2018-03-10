@@ -1,0 +1,1 @@
+delete from contacts where name like 'a test %'
