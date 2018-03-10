@@ -1,9 +1,12 @@
 require "db"
 
+driver = ""
 {% if flag?(:db_pg) %}
   require "pg"
+  driver = "pg"
 {% else %}
   require "pq"
+  driver = "pq"
 {% end %}
 
 connection_string = ARGV[0]
@@ -63,5 +66,5 @@ DB.open connection_string do |db|
     end
   end
 
-  puts t1, t2, t3, t4, t5
+  puts "crystal-#{driver},#{t1},#{t2},#{t3},#{t4},#{t5}"
 end

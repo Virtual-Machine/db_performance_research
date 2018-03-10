@@ -56,5 +56,5 @@ t5 = benchmark do
   end
 end
 
-puts t1, t2, t3, t4, t5
+puts "ruby,#{t1},#{t2},#{t3},#{t4},#{t5}"
 

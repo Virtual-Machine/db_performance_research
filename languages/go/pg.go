@@ -122,11 +122,7 @@ func main() {
 		}
 	})
 
-	fmt.Println(t1)
-	fmt.Println(t2)
-	fmt.Println(t3)
-	fmt.Println(t4)
-	fmt.Println(t5)
+	fmt.Printf("go,%f,%f,%f,%f,%f\n", t1, t2, t3, t4, t5)
 }
 
 func benchmark(test func()) float64 {
