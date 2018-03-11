@@ -1,7 +1,7 @@
 require "crust"
 
-# puts "Building C binary"
-# clang -xc O3 -o ../bin/c-pg ../languages/c/main.c
+puts "Building C binary"
+`clang -optimize=3 -o bin/c-pg languages/c/main.c -lpq`
 
 puts "Building Crystal-PG"
 release_build("-Ddb_pg languages/crystal/main.cr", "bin/crystal-pg")

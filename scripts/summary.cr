@@ -9,7 +9,7 @@ struct ResultSet
 end
 
 def starting_set : ResultSet
-  return ResultSet.new "", "", 0.0, 0.0, {"crystal-pg" => 0.0, "crystal-pq" => 0.0, "go" => 0.0, "ruby" => 0.0}
+  return ResultSet.new "", "", 0.0, 0.0, {"crystal-pg" => 0.0, "crystal-pq" => 0.0, "go" => 0.0, "ruby" => 0.0, "c" => 0.0}
 end
 
 macro update_results(*index)
