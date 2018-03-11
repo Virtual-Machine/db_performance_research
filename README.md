@@ -37,7 +37,11 @@ Feedback is welcome in the issues. Feel free to leave comments or concerns.
 - Could possibly enable faster optimizations for C binary.
 - Currently only tests synchronous, non-concurrent requests.
 - Go and Crystal are using connection pools
-- Crystal's connection pool is configured to handle 1 max connection
+- Crystal's connection pool is currently configured to handle 1 max connection
+- Go's connection pool is left to default configuration
+- I want to extend these benchmarks with additional test cases and also test concurrent requests.
+
+- NOTE : Benchmarks could be very unfair across implmentations currently, hoping to reduce this
 
 
 ### Structure
