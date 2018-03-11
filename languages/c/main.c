@@ -4,13 +4,6 @@
 #include <libpq-fe.h>
 #include <sys/time.h>
 
-static void
-exit_nicely(PGconn *conn)
-{
-    PQfinish(conn);
-    exit(1);
-}
-
 char * load_file(char *name){
     FILE *fp;
     char *buffer;
@@ -39,6 +32,15 @@ static char *query5;
 static PGconn *conn;
 static PGresult *res;
 
+static void
+exit_nicely()
+{
+    printf("%s", PQerrorMessage(conn));
+    PQfinish(conn);
+    exit(1);
+}
+
+
 double benchmark(void (*functionPtr)()){
     struct timeval start, stop;
     double secs = 0;
@@ -56,10 +58,8 @@ void test1() {
     res = PQexec(conn, query1);
     
     if (PQresultStatus(res) != PGRES_COMMAND_OK) {
-
-        printf("Command failed:\n");        
         PQclear(res);
-        exit_nicely(conn);
+        exit_nicely();
     }    
 
     PQclear(res);
@@ -69,10 +69,8 @@ void test2() {
     res = PQexec(conn, query2);
     
     if (PQresultStatus(res) != PGRES_TUPLES_OK) {
-
-        printf("Select failed:\n");        
         PQclear(res);
-        exit_nicely(conn);
+        exit_nicely();
     }
 
     int rows = PQntuples(res);
@@ -97,9 +95,8 @@ void test3() {
 
         if (PQresultStatus(res) != PGRES_COMMAND_OK)
         {
-            fprintf(stderr, "Command failed: %s", PQerrorMessage(conn));
             PQclear(res);
-            exit_nicely(conn);
+            exit_nicely();
         }
         PQclear(res);
     }
@@ -109,10 +106,8 @@ void test4() {
     res = PQexec(conn, query4);
     
     if (PQresultStatus(res) != PGRES_TUPLES_OK) {
-
-        printf("Select failed:\n");        
         PQclear(res);
-        exit_nicely(conn);
+        exit_nicely();
     }
 
     int rows = PQntuples(res);
@@ -133,11 +128,9 @@ void test5() {
         const char *arguments[] = {arg1};
         res = PQexecParams(conn,query5,1,NULL,arguments,NULL,NULL,0);
 
-        if (PQresultStatus(res) != PGRES_TUPLES_OK)
-        {
-            fprintf(stderr, "SELECT failed: %s", PQerrorMessage(conn));
+        if (PQresultStatus(res) != PGRES_TUPLES_OK) {
             PQclear(res);
-            exit_nicely(conn);
+            exit_nicely();
         }
 
         int rows = PQntuples(res);
@@ -169,7 +162,7 @@ main(int argc, char **argv)
     {
         fprintf(stderr, "Connection to database failed: %s",
                 PQerrorMessage(conn));
-        exit_nicely(conn);
+        exit_nicely();
     }
 
     double t1 = benchmark(&test1);
