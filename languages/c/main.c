@@ -78,8 +78,8 @@ void test2() {
     int rows = PQntuples(res);
     
     for(int i=0; i<rows; i++) {
-        PQgetvalue(res, i, 0);
-        PQgetvalue(res, i, 1);
+        char *name = PQgetvalue(res, i, 0);
+        char *age = PQgetvalue(res, i, 1);
     }
   
 
@@ -118,8 +118,8 @@ void test4() {
     int rows = PQntuples(res);
     
     for(int i=0; i<rows; i++) {
-        PQgetvalue(res, i, 0);
-        PQgetvalue(res, i, 1);
+        char *name = PQgetvalue(res, i, 0);
+        char *age = PQgetvalue(res, i, 1);
     }
   
 
@@ -143,8 +143,8 @@ void test5() {
         int rows = PQntuples(res);
     
         for(int j=0; j<rows; j++) {
-            PQgetvalue(res, j, 0);
-            PQgetvalue(res, j, 1);
+            char *name = PQgetvalue(res, j, 0);
+            char *age = PQgetvalue(res, j, 1);
         }
 
         PQclear(res);
