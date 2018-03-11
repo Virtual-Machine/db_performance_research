@@ -56,3 +56,25 @@ get_files "results/" do |file|
 end
 
 pp results
+
+results.each do |key, value|
+  fastest = ""
+  v = 1000
+  slowest = ""
+  v2 = 0
+  value.overall.each do |key2, value2|
+    if value2 < v
+      fastest = key2
+      v = value2
+    end
+    if value2 > v2
+      slowest = key2
+      v2 = value2
+    end
+  end
+  cry_cur = (results[key].overall["crystal-pg"] + results[key].overall["crystal-pq"]) / 2
+  puts "fastest at #{key} is #{fastest} with\n #{v}"
+  puts "crystal at #{key} =\n #{cry_cur}"
+  puts "slowest at #{key} is #{slowest} with\n #{v2}"
+  puts ""
+end
