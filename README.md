@@ -14,22 +14,30 @@ Add implementations for the following languages:
 Python, Lua, Nim, Java, Kotlin, Swift, Javascript, Shell
 
 
-### Official Target Comparisons
+### Official Implementation Comparisons
 
 #### C
-- Suspected to be the fastest, chosen to represent the high water mark.
+- Using libPQ
 
 #### Golang
-- Fellow compiled language, chosen to represent a language expected to perform similar to Crystal.
+- Using lib-PQ
 
 #### Crystal
-- Main focus of this research.
+- Using Crystal-PG
+- Using Crystal-PQ
 
-#### Ruby
-- Interpreted language that is similar in syntax to Crystal, and the minimum standard of performance needed to meet expectations.
+#### Ruby 
+- Using pg gem
 
 
 Feedback is welcome in the issues. Feel free to leave comments or concerns.
+
+### Caveats
+- C implementation very likely could be improved further.
+- Could possibly enable faster optimizations for C binary.
+- Currently only tests synchronous, non-concurrent requests.
+- Go and Crystal are using connection pools
+- Crystal's connection pool is configured to handle 1 max connection
 
 
 ### Structure
@@ -40,11 +48,10 @@ Therefore the benchmarks will only measure the time it takes between submitting 
 
 All implementations should be structured as follows to ensure comparisons remain as fair as possible:
 
-1. binary/script should accept connection string for the database as a single command line argument.
-2. binary/script should use connection pool if possible to manage connections to the database
-3. all benchmark queries should be read into string variables before any benchmarks begin
-4. benchmark queries should be executed several times each to measure cumulative effects and reduce effect of outlier runs
-5. binary/script should track all response times of each benchmark and print them on exit to std_out
+1. binary/script should use connection pool if possible to manage connections to the database.
+2. all benchmark queries should be read into string variables before any benchmarks begin
+3. benchmark queries should be executed several times each to measure cumulative effects and reduce effect of outlier runs
+4. binary/script should track all response times of each benchmark and print them on exit to std_out
 
 ### Database
 
