@@ -13,6 +13,27 @@ or
 Add implementations for the following languages:
 Python, Lua, Nim, Java, Kotlin, Swift, Javascript, Shell
 
+### Getting Started
+
+You will need the following on your system to be able to run the tests:
+
+1. postgresql
+2. clang
+3. go
+4. crystal
+5. ruby
+6. libpq in system include path
+7. run the install script
+```
+crystal run scripts/install.cr
+```
+8. now you can build, run, and summarize the results
+```
+crystal run scripts/build.cr
+crystal run scripts/run.cr
+crystal run scripts/summary.cr
+```
+
 
 ### Official Implementation Comparisons
 
@@ -25,6 +46,7 @@ Python, Lua, Nim, Java, Kotlin, Swift, Javascript, Shell
 #### Crystal
 - Using Crystal-PG
 - Using Crystal-PQ
+- Using Crystal-LibPQ
 
 #### Ruby 
 - Using pg gem
