@@ -9,6 +9,9 @@ release_build("-Ddb_pg languages/crystal/main.cr", "bin/crystal-pg")
 puts "Building Crystal-PQ"
 release_build("languages/crystal/main.cr", "bin/crystal-pq")
 
+puts "Building Crystal-LibPQ"
+release_build("languages/crystal/libpq.cr", "bin/crystal-libpq")
+
 puts "Building Go binary"
 `go build -ldflags "-s -w" -o bin/golang-pg languages/go/pg.go`
 

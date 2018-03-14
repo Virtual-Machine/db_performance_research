@@ -9,7 +9,7 @@ struct ResultSet
 end
 
 def starting_set : ResultSet
-  return ResultSet.new "", "", 0.0, 0.0, {"crystal-pg" => 0.0, "crystal-pq" => 0.0, "go" => 0.0, "ruby" => 0.0, "c" => 0.0}
+  return ResultSet.new "", "", 0.0, 0.0, {"crystal-pg" => 0.0, "crystal-pq" => 0.0, "crystal-libpq" => 0.0, "go" => 0.0, "ruby" => 0.0, "c" => 0.0}
 end
 
 macro update_results(*index)
@@ -75,6 +75,7 @@ results.each do |key, value|
   cry_cur = (results[key].overall["crystal-pg"] + results[key].overall["crystal-pq"]) / 2
   puts "fastest at #{key} is #{fastest} with\n #{v}"
   puts "crystal at #{key} =\n #{cry_cur}"
+  puts "crystal via libpq at #{key} =\n #{results[key].overall["crystal-libpq"]}"
   puts "slowest at #{key} is #{slowest} with\n #{v2}"
   puts ""
 end
