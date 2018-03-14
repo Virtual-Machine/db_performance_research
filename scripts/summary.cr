@@ -1,10 +1,49 @@
 require "crust"
 require "csv"
 
+def colourize_name(name : String) : String
+  case name
+  when "crystal-pg", "crystal-pq"
+    return "\033[0;33m#{name}\033[0m"
+  when "crystal-libpq"
+    return "\033[0;35m#{name}\033[0m"
+  when "ruby"
+    return "\033[0;31m#{name}\033[0m"
+  when "go"
+    return "\033[0;34m#{name}\033[0m"
+  when "c"
+    return "\033[0;32m#{name}\033[0m"
+  else
+    return name
+  end
+end
+
+def clean_float(res : Float64) : String
+  return sprintf("%f", res)
+end
+
 struct ResultSet
   property min_name, max_name, min_value, max_value, overall
 
   def initialize(@min_name : String, @max_name : String, @min_value : Float64, @max_value : Float64, @overall : Hash(String, Float64))
+  end
+
+  def print_results(name : Symbol)
+    puts
+    puts name
+    puts "==================="
+    res = [] of Tuple(String, Float64)
+    @overall.each do |rec|
+      res << rec
+    end
+    res.sort! { |x, y| x[1] <=> y[1] }
+    res.each do |rec|
+      name = colourize_name(rec[0])
+      val = clean_float(rec[1])
+      puts "#{val}  --  #{name}"
+    end
+
+    puts "DELTA Fastest Vs Slowest: #{res[-1][1] - res[0][1]}"
   end
 end
 
@@ -55,27 +94,6 @@ get_files "results/" do |file|
   end
 end
 
-pp results
-
 results.each do |key, value|
-  fastest = ""
-  v = 1000
-  slowest = ""
-  v2 = 0
-  value.overall.each do |key2, value2|
-    if value2 < v
-      fastest = key2
-      v = value2
-    end
-    if value2 > v2
-      slowest = key2
-      v2 = value2
-    end
-  end
-  cry_cur = (results[key].overall["crystal-pg"] + results[key].overall["crystal-pq"]) / 2
-  puts "fastest at #{key} is #{fastest} with\n #{v}"
-  puts "crystal at #{key} =\n #{cry_cur}"
-  puts "crystal via libpq at #{key} =\n #{results[key].overall["crystal-libpq"]}"
-  puts "slowest at #{key} is #{slowest} with\n #{v2}"
-  puts ""
+  value.print_results key
 end
