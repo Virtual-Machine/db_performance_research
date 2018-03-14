@@ -1,17 +1,14 @@
 # db_performance_research
-Research on database performance for use in web application APIs.
-
-I am in particular, investigating Crystal's database performance compared to other languages I typically would use to access database information.
-
+PostgreSQL Database Driver Benchmarks
 
 I welcome pull requests that will:
 
-Improve existing implementations (without sacrificing readability)
+`Improve existing implementations (without sacrificing readability)`
 
 or
 
-Add implementations for the following languages:
-Python, Lua, Nim, Java, Kotlin, Swift, Javascript, Shell
+`Add implementations for the following languages:
+Python, Lua, Nim, Java, Kotlin, Swift, Javascript, Shell`
 
 ### Getting Started
 
@@ -62,7 +59,7 @@ Feedback is welcome in the issues. Feel free to leave comments or concerns.
 - Go's connection pool is left to default configuration
 - I want to extend these benchmarks with additional test cases and also test concurrent requests.
 
-- NOTE : Benchmarks could be very unfair across implmentations currently, hoping to reduce this
+- NOTE : Benchmarks could be unfair across implmentations currently, hoping to reduce this
 
 
 ### Structure
