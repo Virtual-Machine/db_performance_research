@@ -32,7 +32,7 @@ crystal run scripts/summary.cr
 ```
 
 
-### Official Implementation Comparisons
+### Driver Comparisons
 
 #### C
 - Using github.com/postgres/postgres - libPQ
@@ -52,7 +52,7 @@ crystal run scripts/summary.cr
 Feedback is welcome in the issues. Feel free to leave comments or concerns.
 
 ### Caveats
-- C implementation very likely could be improved further.
+- C implementation likely could be improved further.
 - Could possibly enable faster optimizations for C binary.
 - Currently only tests synchronous, non-concurrent requests.
 - Crystal's connection pool is currently configured to handle 1 max connection
