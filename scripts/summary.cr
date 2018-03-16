@@ -13,7 +13,7 @@ def colourize_name(name : String) : String
     return "\033[0;35m#{name}\033[0m"
   when "ruby"
     return "\033[0;31m#{name}\033[0m"
-  when "go"
+  when "go-pg", "go-pgx"
     return "\033[0;34m#{name}\033[0m"
   when "c"
     return "\033[0;32m#{name}\033[0m"
@@ -38,7 +38,7 @@ struct ResultSet
     @max_name = ""
     @min_value = 9999.0
     @max_value = 0.0
-    @overall = {"crystal-pg" => 0.0, "crystal-pq" => 0.0, "crystal-libpq" => 0.0, "go" => 0.0, "ruby" => 0.0, "c" => 0.0}
+    @overall = {"crystal-pg" => 0.0, "crystal-pq" => 0.0, "crystal-libpq" => 0.0, "go-pg" => 0.0, "go-pgx" => 0.0, "ruby" => 0.0, "c" => 0.0}
   end
 
   def set_min_max(subject : String, q_val : Float64)
