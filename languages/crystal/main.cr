@@ -9,6 +9,10 @@ driver = ""
   driver = "pq"
 {% end %}
 
+if ARGV.size == 0
+  puts "You need to pass connection string to binary as argument"
+  exit(-1)
+end
 connection_string = ARGV[0]
 
 def benchmark(&block) : String
@@ -70,9 +74,9 @@ DB.open connection_string do |db|
   t6 = benchmark do
     channel = Channel(Nil).new(100)
     100.times do |i|
-      proc = ->(x : Int32) do
+      proc = ->(j : Int32) do
         spawn do
-          db.query query5, [i] do |rs|
+          db.query query5, [j] do |rs|
             rs.each do
               name = rs.read(String)
               age = rs.read(Int32)
