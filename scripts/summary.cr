@@ -68,7 +68,7 @@ end
 # This hash contains a ResultSet per value column in the supplied CSV data
 # ========
 
-def generate_results(data : Array(Array(String))) : Hash(String, ResultSet)
+def generate_results(data : Array(Array(String))) : Tuple(Hash(String, ResultSet), Int32)
   results = {} of String => ResultSet
   subjects = data.transpose[0].uniq
   iterations = data.size / subjects.size
@@ -88,7 +88,7 @@ def generate_results(data : Array(Array(String))) : Hash(String, ResultSet)
       cur_set.overall[subject] += q_val / iterations
     end
   end
-  results
+  {results, iterations}
 end
 
 # ========
@@ -110,6 +110,8 @@ get_files "results/" do |file|
   puts file
   csv_data = CSV.parse(File.read(file))
 
-  results = generate_results csv_data
+  results, iterations = generate_results csv_data
   print_results results
+  puts
+  puts "Based on average of #{iterations} runs"
 end
