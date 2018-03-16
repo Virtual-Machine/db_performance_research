@@ -1,0 +1,8 @@
+q1: delete from contacts where name like 'a test %' (1000 record delete with wildcard search)
+q2: select name, age from contacts order by age desc (1 select retrieving 1000 records into local variables) 
+q3: insert into contacts values ($1, $2) (1000 individual inserts using execution parameters) 
+q4: select name, age from contacts order by age asc (1 select retrieving 2000 records into local variables)
+q5: select name, age from contacts where age = $1 (1000 individual selects using execution parameters)
+q6: select name, age from contacts where age = $1 (1000 concurrent selects using execution parameters) 
+
+

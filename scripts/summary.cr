@@ -1,5 +1,6 @@
 require "crust"
 require "csv"
+require "yaml"
 
 # ========
 # Helpers
@@ -40,9 +41,9 @@ struct ResultSet
     end
   end
 
-  def print_results(name : String)
+  def print_results(name : String, descriptions : YAML::Any)
     puts
-    puts name
+    puts descriptions[name]
     puts "==================="
     res = [] of Tuple(String, Float64)
     @overall.each do |rec|
@@ -95,11 +96,13 @@ end
 # prints results of each resultset in result collection
 # ========
 
-def print_results(result_collection : Hash(String, ResultSet)) : Nil
+def print_results(result_collection : Hash(String, ResultSet), descriptions : YAML::Any) : Nil
   result_collection.each do |key, rs|
-    rs.print_results key
+    rs.print_results key, descriptions
   end
 end
+
+query_descriptions = YAML.parse File.read "sql/descriptions.yml"
 
 # ========
 # for each file in results, generate results and report
@@ -111,7 +114,7 @@ get_files "results/" do |file|
   csv_data = CSV.parse(File.read(file))
 
   results, iterations = generate_results csv_data
-  print_results results
+  print_results results, query_descriptions
   puts
   puts "Based on average of #{iterations} runs"
 end
