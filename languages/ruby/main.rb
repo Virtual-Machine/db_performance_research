@@ -56,6 +56,25 @@ t5 = benchmark do
   end
 end
 
-puts "ruby,#{t1},#{t2},#{t3},#{t4},#{t5}"
+t6 = benchmark do
+  threads = []
+  100.times do |i|
+    conn_concurrent = PG.connect( dbname: 'test' )
+    threads << Thread.new(i) do |j|
+      puts j
+      conn_concurrent.exec( query5, [j] ) do |result|
+        result.each do |row|
+          name, age = row.values_at('name', 'age')
+        end
+        conn_concurrent.close
+      end
+    end
+  end
+  threads.each do |thread|
+    thread.join
+  end
+end
+
+puts "ruby,#{t1},#{t2},#{t3},#{t4},#{t5},#{t6}"
 
 conn.close
