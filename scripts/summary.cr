@@ -71,6 +71,7 @@ end
 def generate_results(data : Array(Array(String))) : Hash(String, ResultSet)
   results = {} of String => ResultSet
   subjects = data.transpose[0].uniq
+  iterations = data.size / subjects.size
   data.each do |row|
     subject = row[0]
     values = row[1..-1]
@@ -84,7 +85,7 @@ def generate_results(data : Array(Array(String))) : Hash(String, ResultSet)
       end
 
       cur_set = results[q_index]
-      cur_set.overall[subject] += q_val
+      cur_set.overall[subject] += q_val / iterations
     end
   end
   results
@@ -105,6 +106,7 @@ end
 # ========
 
 get_files "results/" do |file|
+  puts
   puts file
   csv_data = CSV.parse(File.read(file))
 
