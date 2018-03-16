@@ -39,6 +39,7 @@ crystal run scripts/summary.cr
 
 #### Golang
 - Using github.com/lib/pq
+- Using github.com/jackc/pgx via native interface and connection pool
 
 #### Crystal
 - Using github.com/will/crystal-pg
@@ -52,14 +53,8 @@ crystal run scripts/summary.cr
 Feedback is welcome in the issues. Feel free to leave comments or concerns.
 
 ### Caveats
-- C implementation likely could be improved further.
-- Could possibly enable faster optimizations for C binary.
-- Currently only tests synchronous, non-concurrent requests.
-- Crystal's connection pool is currently configured to handle 1 max connection
-- Go's connection pool is left to default configuration
-- I want to extend these benchmarks with additional test cases and also test concurrent requests.
-
 - NOTE : Benchmarks could be unfair across implmentations currently, hoping to reduce this
+- C, and Ruby are currently not being tested concurrently. T6
 
 
 ### Structure
