@@ -122,7 +122,37 @@ func main() {
 		}
 	})
 
-	fmt.Printf("go,%f,%f,%f,%f,%f\n", t1, t2, t3, t4, t5)
+	t6 := benchmark(func() {
+		channel := make(chan int, 100)
+		for i := 0; i < 100; i++ {
+			go func(j int) {
+				rows, err := db.Query(query5, j)
+				if err != nil {
+					panic(err)
+				}
+				var name string
+				var age int
+				for rows.Next() {
+					err := rows.Scan(&name, &age)
+					if err != nil {
+						panic(err)
+					}
+				}
+				err = rows.Err()
+				if err != nil {
+					panic(err)
+				}
+				rows.Close()
+				channel <- 0
+			}(i)
+		}
+
+		for i := 0; i < 100; i++ {
+			<-channel
+		}
+	})
+
+	fmt.Printf("go-pg,%f,%f,%f,%f,%f,%f\n", t1, t2, t3, t4, t5, t6)
 }
 
 func benchmark(test func()) float64 {

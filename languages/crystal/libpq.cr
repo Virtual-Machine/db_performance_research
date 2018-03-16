@@ -56,6 +56,28 @@ t5 = benchmark do
   end
 end
 
-puts "crystal-libpq,#{t1},#{t2},#{t3},#{t4},#{t5}"
+t6 = benchmark do
+  channel = Channel(Nil).new(100)
+  100.times do |i|
+    proc = ->(x : Int32) do
+      spawn do
+        args = ["#{i}".to_unsafe].to_unsafe
+        res = LibPQ.exec_params conn, query5, 1, nil, args, nil, nil, 0
+        rows = LibPQ.ntuples res
+        rows.times do |i|
+          name = String.new(LibPQ.get_value res, i, 0)
+          age = String.new(LibPQ.get_value res, i, 1)
+        end
+        channel.send(nil)
+      end
+    end
+    proc.call(i)
+  end
+  100.times do
+    channel.receive
+  end
+end
+
+puts "crystal-libpq,#{t1},#{t2},#{t3},#{t4},#{t5},#{t6}"
 
 LibPQ.finish conn

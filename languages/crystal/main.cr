@@ -66,5 +66,26 @@ DB.open connection_string do |db|
     end
   end
 
-  puts "crystal-#{driver},#{t1},#{t2},#{t3},#{t4},#{t5}"
+  t6 = benchmark do
+    channel = Channel(Nil).new(100)
+    100.times do |i|
+      proc = ->(x : Int32) do
+        spawn do
+          db.query query5, [i] do |rs|
+            rs.each do
+              name = rs.read(String)
+              age = rs.read(Int32)
+            end
+          end
+          channel.send(nil)
+        end
+      end
+      proc.call(i)
+    end
+    100.times do
+      channel.receive
+    end
+  end
+
+  puts "crystal-#{driver},#{t1},#{t2},#{t3},#{t4},#{t5},#{t6}"
 end
