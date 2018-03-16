@@ -53,8 +53,8 @@ crystal run scripts/summary.cr
 Feedback is welcome in the issues. Feel free to leave comments or concerns.
 
 ### Caveats
-- NOTE : Benchmarks could be unfair across implmentations currently, hoping to reduce this
-- C, and Ruby are currently not being tested concurrently. T6
+- NOTE : Benchmarks could be unfair across implementations currently, hoping to reduce this
+- C, and Ruby are currently not being tested concurrently.
 
 
 ### Structure
