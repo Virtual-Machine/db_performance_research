@@ -31,23 +31,12 @@ end
 # ========
 
 struct ResultSet
-  property min_name, max_name, min_value, max_value, overall
+  property overall, counts
 
-  def initialize
-    @min_name = ""
-    @max_name = ""
-    @min_value = 9999.0
-    @max_value = 0.0
-    @overall = {"crystal-pg" => 0.0, "crystal-pq" => 0.0, "crystal-libpq" => 0.0, "go-pg" => 0.0, "go-pgx" => 0.0, "ruby" => 0.0, "c" => 0.0}
-  end
-
-  def set_min_max(subject : String, q_val : Float64)
-    if @min_value > q_val
-      @min_name = subject
-      @min_value = q_val
-    elsif @max_value < q_val
-      @max_name = subject
-      @max_value = q_val
+  def initialize(keys : Array(String))
+    @overall = {} of String => Float64
+    keys.each do |key|
+      @overall[key] = 0.0
     end
   end
 
@@ -70,6 +59,7 @@ struct ResultSet
     end
 
     puts "DELTA Fastest Vs Slowest: #{clean_float(res[-1][1] - res[0][1])}"
+    puts "Overhead: #{clean_float((res[-1][1] / res[0][1]) * 100)}%"
   end
 end
 
@@ -80,6 +70,7 @@ end
 
 def generate_results(data : Array(Array(String))) : Hash(String, ResultSet)
   results = {} of String => ResultSet
+  subjects = data.transpose[0].uniq
   data.each do |row|
     subject = row[0]
     values = row[1..-1]
@@ -89,12 +80,11 @@ def generate_results(data : Array(Array(String))) : Hash(String, ResultSet)
       q_val = val.to_f
 
       if !results.has_key?(q_index)
-        results[q_index] = ResultSet.new
+        results[q_index] = ResultSet.new subjects
       end
 
       cur_set = results[q_index]
       cur_set.overall[subject] += q_val
-      cur_set.set_min_max subject, q_val
     end
   end
   results
