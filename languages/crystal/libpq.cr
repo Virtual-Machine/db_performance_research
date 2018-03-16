@@ -1,10 +1,11 @@
 require "libpq"
 
-def benchmark(&block) : Time::Span
+def benchmark(&block) : String
   t1 = Time.now
   yield
   t2 = Time.now
-  t2 - t1
+  diff = t2 - t1
+  sprintf("%.6f", diff.total_seconds)
 end
 
 conn = LibPQ.connect_db("postgres://dwork@localhost:5432/test")
