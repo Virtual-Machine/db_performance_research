@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <libpq-fe.h>
 #include <sys/time.h>
+#include <pthread.h>
 
 char * load_file(char *name){
     FILE *fp;
@@ -29,6 +30,7 @@ static char *query2;
 static char *query3;
 static char *query4;
 static char *query5;
+static char *query6;
 static PGconn *conn;
 static PGresult *res;
 
@@ -144,6 +146,58 @@ void test5() {
     }
 }
 
+void *myThreadFun(void *vargp)
+{
+    PGconn *temp_conn = PQconnectdb("dbname = test");
+    if (PQstatus(temp_conn) != CONNECTION_OK)
+    {
+        fprintf(stderr, "Connection to database failed: %s",
+                PQerrorMessage(temp_conn));
+        exit_nicely();
+    }
+    int *myid = (int *)vargp;
+    char arg1[10] = {0};
+    sprintf(arg1, "%d", *myid);
+    const char *arguments[] = {arg1};
+    PGresult *temp_res = PQexecParams(temp_conn,"select name, age from contacts where age = $1",1,NULL,arguments,NULL,NULL,0);
+
+    if (PQresultStatus(temp_res) != PGRES_TUPLES_OK) {
+        PQclear(temp_res);
+        exit_nicely();
+    }
+
+    int rows = PQntuples(temp_res);
+
+
+    for(int j=0; j<rows; j++) {
+        char *name = PQgetvalue(temp_res, j, 0);
+        char *age = PQgetvalue(temp_res, j, 1);
+    }
+
+    PQclear(temp_res);
+    PQfinish(temp_conn);
+    return NULL;
+}
+
+void test6() {
+  pthread_t thr[100];
+  int i, rc;
+ 
+  /* create threads */
+  for (i = 0; i < 100; ++i) {
+    int *temp_int = malloc(sizeof i);
+    *temp_int = i;
+
+    if ((rc = pthread_create(&thr[i], NULL, myThreadFun, temp_int))) {
+      fprintf(stderr, "error: pthread_create, rc: %d\n", rc);
+    }
+  }
+  /* block until all threads complete */
+  for (i = 0; i < 100; ++i) {
+    pthread_join(thr[i], NULL);
+  }
+}
+
 int
 main(int argc, char **argv)
 {
@@ -154,6 +208,7 @@ main(int argc, char **argv)
     query3 = load_file("sql/query3.sql");
     query4 = load_file("sql/query4.sql");
     query5 = load_file("sql/query5.sql");
+    query6 = load_file("sql/query5.sql");
 
     
     conn = PQconnectdb("dbname = test");
@@ -170,10 +225,11 @@ main(int argc, char **argv)
     double t3 = benchmark(&test3);
     double t4 = benchmark(&test4);
     double t5 = benchmark(&test5);
+    double t6 = benchmark(&test6);
 
     PQfinish(conn);
 
-    printf("c,%f,%f,%f,%f,%f\n", t1, t2, t3, t4, t5);
+    printf("c,%f,%f,%f,%f,%f,%f\n", t1, t2, t3, t4, t5, t6);
 
 
     return 0;
