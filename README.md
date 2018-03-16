@@ -54,7 +54,7 @@ Feedback is welcome in the issues. Feel free to leave comments or concerns.
 
 ### Caveats
 - NOTE : Benchmarks could be unfair across implementations currently, hoping to reduce this
-- The C implementation currently is not being tested concurrently T6.
+- Implementations without a database pool will use multiple temp connections as a workaround.
 
 
 ### Structure
