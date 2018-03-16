@@ -70,9 +70,18 @@ All implementations should be structured as follows to ensure comparisons remain
 3. benchmark queries should be executed several times each to measure cumulative effects and reduce effect of outlier runs
 4. binary/script should track all response times of each benchmark and print them on exit to std_out
 
-### Database
 
-For initial simplicity only PostgreSQL will be targeted but I may extend the results with MySQL at a future point.
+### Tests
+
+#### Simple Tests
+1. T1 - delete from contacts where name like 'a test %' (1000 record delete with wildcard search)
+2. T2 - select name, age from contacts order by age desc (1 select retrieving 1000 records into local variables)
+3. T3 - insert into contacts values ($1, $2) (1000 individual inserts using execution parameters)
+4. T4 - select name, age from contacts order by age asc (1 select retrieving 2000 records into local variables)
+5. T5 - select name, age from contacts where age = $1 (1000 individual selects using execution parameters)
+6. T6 - select name, age from contacts where age = $1 (1000 concurrent selects using execution parameters)
+
+
 
 
 
