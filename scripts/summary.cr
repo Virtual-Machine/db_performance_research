@@ -60,6 +60,9 @@ struct ResultSet
       res << rec
     end
     res.sort! { |x, y| x[1] <=> y[1] }
+
+    res = res.reject { |x| x[1] == 0.0 }
+
     res.each do |rec|
       name = colourize_name(rec[0])
       val = clean_float(rec[1])
