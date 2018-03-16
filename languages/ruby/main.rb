@@ -61,7 +61,6 @@ t6 = benchmark do
   100.times do |i|
     threads << Thread.new(i) do |j|
       conn_concurrent = PG.connect( dbname: 'test' )
-      puts j
       conn_concurrent.exec( query5, [j] ) do |result|
         result.each do |row|
           name, age = row.values_at('name', 'age')
