@@ -1,8 +1,14 @@
 require "crust"
 
+pool_size = "1"
+
+if ARGV.size > 0
+  pool_size = ARGV[0]
+end
+
 connection_string = "postgres://localhost:5432/test?prepared_statements=false"
-connection_string += "&initial_pool_size=1&max_pool_size=1&max_idle_pool_size=1"
-log = "results/log_file"
+connection_string += "&initial_pool_size=#{pool_size}&max_pool_size=#{pool_size}&max_idle_pool_size=#{pool_size}"
+log = "results/log_file_#{pool_size}"
 ruby_bin = "/usr/bin/ruby"
 
 iterations = 10
