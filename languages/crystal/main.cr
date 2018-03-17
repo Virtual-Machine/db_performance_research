@@ -9,11 +9,11 @@ driver = ""
   driver = "pq"
 {% end %}
 
-if ARGV.size == 0
-  puts "You need to pass connection string to binary as argument"
-  exit(-1)
+connection_string = "postgres://localhost:5432/test?prepared_statements=false&initial_pool_size=1&max_pool_size=1&max_idle_pool_size=1"
+
+if ARGV.size > 0
+  connection_string = ARGV[0]
 end
-connection_string = ARGV[0]
 
 def benchmark(&block) : String
   t1 = Time.now
