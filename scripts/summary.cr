@@ -39,64 +39,16 @@ DB.open connection_string do |db|
     end
   end
 
-  puts "\n#{query_descriptions["q1"]} in Seconds Averaged"
-  db.query "select imp_name, avg(seconds) As AvgSeconds from results where test = 't1' group by imp_name order by avg(seconds);" do |rs|
-    rs.each do
-      name = rs.read(String)
-      total = rs.read(PG::Numeric)
+  6.times do |i|
+    index = i + 1
+    puts "\n#{query_descriptions["q" + index.to_s]} in Seconds Averaged"
+    db.query "select imp_name, avg(seconds) As AvgSeconds from results where test = 't#{index}' group by imp_name order by avg(seconds);" do |rs|
+      rs.each do
+        name = rs.read(String)
+        total = rs.read(PG::Numeric)
 
-      puts "  #{total.to_f}\t#{colourize_name(name)}"
-    end
-  end
-  puts
-
-  puts "\n#{query_descriptions["q2"]} in Seconds Averaged"
-  db.query "select imp_name, avg(seconds) As AvgSeconds from results where test = 't2' group by imp_name order by avg(seconds);" do |rs|
-    rs.each do
-      name = rs.read(String)
-      total = rs.read(PG::Numeric)
-
-      puts "  #{total.to_f}\t#{colourize_name(name)}"
-    end
-  end
-
-  puts "\n#{query_descriptions["q3"]} in Seconds Averaged"
-  db.query "select imp_name, avg(seconds) As AvgSeconds from results where test = 't3' group by imp_name order by avg(seconds);" do |rs|
-    rs.each do
-      name = rs.read(String)
-      total = rs.read(PG::Numeric)
-
-      puts "  #{total.to_f}\t#{colourize_name(name)}"
-    end
-  end
-
-  puts "\n#{query_descriptions["q4"]} in Seconds Averaged"
-  db.query "select imp_name, avg(seconds) As AvgSeconds from results where test = 't4' group by imp_name order by avg(seconds);" do |rs|
-    rs.each do
-      name = rs.read(String)
-      total = rs.read(PG::Numeric)
-
-      puts "  #{total.to_f}\t#{colourize_name(name)}"
-    end
-  end
-
-  puts "\n#{query_descriptions["q5"]} in Seconds Averaged"
-  db.query "select imp_name, avg(seconds) As AvgSeconds from results where test = 't5' group by imp_name order by avg(seconds);" do |rs|
-    rs.each do
-      name = rs.read(String)
-      total = rs.read(PG::Numeric)
-
-      puts "  #{total.to_f}\t#{colourize_name(name)}"
-    end
-  end
-
-  puts "\n#{query_descriptions["q6"]} in Seconds Averaged"
-  db.query "select imp_name, avg(seconds) As AvgSeconds from results where test = 't6' group by imp_name order by avg(seconds);" do |rs|
-    rs.each do
-      name = rs.read(String)
-      total = rs.read(PG::Numeric)
-
-      puts "  #{total.to_f}\t#{colourize_name(name)}"
+        puts "  #{total.to_f}\t#{colourize_name(name)}"
+      end
     end
   end
 end
