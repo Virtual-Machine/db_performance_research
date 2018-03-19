@@ -39,7 +39,7 @@ DB.open connection_string do |db|
     end
   end
 
-  6.times do |i|
+  query_descriptions.size.times do |i|
     index = i + 1
     puts "\n#{query_descriptions["q" + index.to_s]} in Seconds Averaged"
     db.query "select imp_name, avg(seconds) As AvgSeconds from results where test = 't#{index}' group by imp_name order by avg(seconds);" do |rs|
