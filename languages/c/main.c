@@ -198,6 +198,17 @@ void test6() {
   }
 }
 
+void log_result(struct tm* info, char *name, double res){
+    char arg1[2] = {0};
+    sprintf(arg1, "%s", "c");
+    char arg2[80] = {0};
+    strftime(arg2, sizeof(arg2), "%Y-%m-%d %H:%M:%S", info);
+    char arg4[19] = {0};
+    sprintf(arg4, "%f", res);
+    const char *arguments[] = {arg1, arg2, name, arg4};
+    PQexecParams(conn,"insert into results values ($1, $2, $3, $4)",4,NULL,arguments,NULL,NULL,0);
+}
+
 int
 main(int argc, char **argv)
 {
@@ -231,46 +242,13 @@ main(int argc, char **argv)
     time(&now);
     struct tm *info;
     info = localtime( &now );
-    char arg1[2] = {0};
-    sprintf(arg1, "%s", "c");
-    char arg2[80] = {0};
-    strftime(arg2, sizeof(arg2), "%Y-%m-%d %H:%M:%S", info);
-    char arg3[5] = {0};
-    sprintf(arg3, "%s", "t1");
-    char arg4[19] = {0};
-    sprintf(arg4, "%f", t1);
-    const char *arguments[] = {arg1, arg2, arg3, arg4};
-    res = PQexecParams(conn,"insert into results values ($1, $2, $3, $4)",4,NULL,arguments,NULL,NULL,0);
-    char arg3[5] = {0};
-    sprintf(arg3, "%s", "t2");
-    char arg4[19] = {0};
-    sprintf(arg4, "%f", t2);
-    const char *arguments[] = {arg1, arg2, arg3, arg4};
-    res = PQexecParams(conn,"insert into results values ($1, $2, $3, $4)",4,NULL,arguments,NULL,NULL,0);
-    char arg3[5] = {0};
-    sprintf(arg3, "%s", "t3");
-    char arg4[19] = {0};
-    sprintf(arg4, "%f", t3);
-    const char *arguments[] = {arg1, arg2, arg3, arg4};
-    res = PQexecParams(conn,"insert into results values ($1, $2, $3, $4)",4,NULL,arguments,NULL,NULL,0);
-    char arg3[5] = {0};
-    sprintf(arg3, "%s", "t4");
-    char arg4[19] = {0};
-    sprintf(arg4, "%f", t4);
-    const char *arguments[] = {arg1, arg2, arg3, arg4};
-    res = PQexecParams(conn,"insert into results values ($1, $2, $3, $4)",4,NULL,arguments,NULL,NULL,0);
-    char arg3[5] = {0};
-    sprintf(arg3, "%s", "t5");
-    char arg4[19] = {0};
-    sprintf(arg4, "%f", t5);
-    const char *arguments[] = {arg1, arg2, arg3, arg4};
-    res = PQexecParams(conn,"insert into results values ($1, $2, $3, $4)",4,NULL,arguments,NULL,NULL,0);
-    char arg3[5] = {0};
-    sprintf(arg3, "%s", "t6");
-    char arg4[19] = {0};
-    sprintf(arg4, "%f", t6);
-    const char *arguments[] = {arg1, arg2, arg3, arg4};
-    res = PQexecParams(conn,"insert into results values ($1, $2, $3, $4)",4,NULL,arguments,NULL,NULL,0);
+
+    log_result(info, "t1", t1);
+    log_result(info, "t2", t2);
+    log_result(info, "t3", t3);
+    log_result(info, "t4", t4);
+    log_result(info, "t5", t5);
+    log_result(info, "t6", t6);
 
     PQfinish(conn);
 
