@@ -26,7 +26,6 @@ end
 query_descriptions = YAML.parse File.read "sql/descriptions.yml"
 
 connection_string = "postgres://localhost:5432/test?prepared_statements=false&initial_pool_size=1&max_pool_size=1&max_idle_pool_size=1"
-pool_size = "1"
 
 DB.open connection_string do |db|
   puts "Total in Seconds"
