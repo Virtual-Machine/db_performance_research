@@ -10,9 +10,11 @@ driver = ""
 {% end %}
 
 connection_string = "postgres://localhost:5432/test?prepared_statements=false&initial_pool_size=1&max_pool_size=1&max_idle_pool_size=1"
+pool_size = "1"
 
 if ARGV.size > 0
-  connection_string = ARGV[0]
+  pool_size = ARGV[0]
+  connection_string = "postgres://localhost:5432/test?prepared_statements=false&initial_pool_size=#{pool_size}&max_pool_size=#{pool_size}&max_idle_pool_size=#{pool_size}"
 end
 
 def benchmark(&block) : String
