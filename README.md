@@ -24,7 +24,13 @@ You will need the following on your system to be able to run the tests:
 ```
 crystal run scripts/install.cr
 ```
-8. now you can build, run, and summarize the results
+8. seed the database
+```bash
+# You may need to configure script to use your default psql username
+psql -d test -a -f scripts/seed.sql 
+
+```
+9. now you can build, run, and summarize the results
 ```
 crystal run scripts/build.cr
 crystal run scripts/run.cr
