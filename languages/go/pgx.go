@@ -144,7 +144,13 @@ func main() {
 		}
 	})
 
-	fmt.Printf("go-pgx,%f,%f,%f,%f,%f,%f\n", t1, t2, t3, t4, t5, t6)
+	now := time.Now()
+	db.Exec("insert into results values ($1, $2, $3, $4)", "go-pgx", now, "t1", t1)
+	db.Exec("insert into results values ($1, $2, $3, $4)", "go-pgx", now, "t2", t2)
+	db.Exec("insert into results values ($1, $2, $3, $4)", "go-pgx", now, "t3", t3)
+	db.Exec("insert into results values ($1, $2, $3, $4)", "go-pgx", now, "t4", t4)
+	db.Exec("insert into results values ($1, $2, $3, $4)", "go-pgx", now, "t5", t5)
+	db.Exec("insert into results values ($1, $2, $3, $4)", "go-pgx", now, "t6", t6)
 }
 
 func benchmark(test func()) float64 {

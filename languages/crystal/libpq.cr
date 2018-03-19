@@ -81,6 +81,18 @@ t6 = benchmark do
   end
 end
 
-puts "crystal-libpq,#{t1},#{t2},#{t3},#{t4},#{t5},#{t6}"
+now = Time.now
+args = ["crystal-libpq".to_unsafe, now.to_s.to_unsafe, "t1".to_unsafe, t1.to_unsafe].to_unsafe
+LibPQ.exec_params conn, "insert into results values ($1, $2, $3, $4)", 4, nil, args, nil, nil, 0
+args = ["crystal-libpq".to_unsafe, now.to_s.to_unsafe, "t2".to_unsafe, t2.to_unsafe].to_unsafe
+LibPQ.exec_params conn, "insert into results values ($1, $2, $3, $4)", 4, nil, args, nil, nil, 0
+args = ["crystal-libpq".to_unsafe, now.to_s.to_unsafe, "t3".to_unsafe, t3.to_unsafe].to_unsafe
+LibPQ.exec_params conn, "insert into results values ($1, $2, $3, $4)", 4, nil, args, nil, nil, 0
+args = ["crystal-libpq".to_unsafe, now.to_s.to_unsafe, "t4".to_unsafe, t4.to_unsafe].to_unsafe
+LibPQ.exec_params conn, "insert into results values ($1, $2, $3, $4)", 4, nil, args, nil, nil, 0
+args = ["crystal-libpq".to_unsafe, now.to_s.to_unsafe, "t5".to_unsafe, t5.to_unsafe].to_unsafe
+LibPQ.exec_params conn, "insert into results values ($1, $2, $3, $4)", 4, nil, args, nil, nil, 0
+args = ["crystal-libpq".to_unsafe, now.to_s.to_unsafe, "t6".to_unsafe, t6.to_unsafe].to_unsafe
+LibPQ.exec_params conn, "insert into results values ($1, $2, $3, $4)", 4, nil, args, nil, nil, 0
 
 LibPQ.finish conn

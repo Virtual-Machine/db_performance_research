@@ -92,5 +92,11 @@ DB.open connection_string do |db|
     end
   end
 
-  puts "crystal-#{driver},#{t1},#{t2},#{t3},#{t4},#{t5},#{t6}"
+  now = Time.now
+  db.exec "insert into results values ($1, $2, $3, $4)", ["crystal-#{driver}-#{pool_size}", now, "t1", t1]
+  db.exec "insert into results values ($1, $2, $3, $4)", ["crystal-#{driver}-#{pool_size}", now, "t2", t2]
+  db.exec "insert into results values ($1, $2, $3, $4)", ["crystal-#{driver}-#{pool_size}", now, "t3", t3]
+  db.exec "insert into results values ($1, $2, $3, $4)", ["crystal-#{driver}-#{pool_size}", now, "t4", t4]
+  db.exec "insert into results values ($1, $2, $3, $4)", ["crystal-#{driver}-#{pool_size}", now, "t5", t5]
+  db.exec "insert into results values ($1, $2, $3, $4)", ["crystal-#{driver}-#{pool_size}", now, "t6", t6]
 end

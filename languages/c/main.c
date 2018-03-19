@@ -227,10 +227,52 @@ main(int argc, char **argv)
     double t5 = benchmark(&test5);
     double t6 = benchmark(&test6);
 
+    time_t now;
+    time(&now);
+    struct tm *info;
+    info = localtime( &now );
+    char arg1[2] = {0};
+    sprintf(arg1, "%s", "c");
+    char arg2[80] = {0};
+    strftime(arg2, sizeof(arg2), "%Y-%m-%d %H:%M:%S", info);
+    char arg3[5] = {0};
+    sprintf(arg3, "%s", "t1");
+    char arg4[19] = {0};
+    sprintf(arg4, "%f", t1);
+    const char *arguments[] = {arg1, arg2, arg3, arg4};
+    res = PQexecParams(conn,"insert into results values ($1, $2, $3, $4)",4,NULL,arguments,NULL,NULL,0);
+    char arg3[5] = {0};
+    sprintf(arg3, "%s", "t2");
+    char arg4[19] = {0};
+    sprintf(arg4, "%f", t2);
+    const char *arguments[] = {arg1, arg2, arg3, arg4};
+    res = PQexecParams(conn,"insert into results values ($1, $2, $3, $4)",4,NULL,arguments,NULL,NULL,0);
+    char arg3[5] = {0};
+    sprintf(arg3, "%s", "t3");
+    char arg4[19] = {0};
+    sprintf(arg4, "%f", t3);
+    const char *arguments[] = {arg1, arg2, arg3, arg4};
+    res = PQexecParams(conn,"insert into results values ($1, $2, $3, $4)",4,NULL,arguments,NULL,NULL,0);
+    char arg3[5] = {0};
+    sprintf(arg3, "%s", "t4");
+    char arg4[19] = {0};
+    sprintf(arg4, "%f", t4);
+    const char *arguments[] = {arg1, arg2, arg3, arg4};
+    res = PQexecParams(conn,"insert into results values ($1, $2, $3, $4)",4,NULL,arguments,NULL,NULL,0);
+    char arg3[5] = {0};
+    sprintf(arg3, "%s", "t5");
+    char arg4[19] = {0};
+    sprintf(arg4, "%f", t5);
+    const char *arguments[] = {arg1, arg2, arg3, arg4};
+    res = PQexecParams(conn,"insert into results values ($1, $2, $3, $4)",4,NULL,arguments,NULL,NULL,0);
+    char arg3[5] = {0};
+    sprintf(arg3, "%s", "t6");
+    char arg4[19] = {0};
+    sprintf(arg4, "%f", t6);
+    const char *arguments[] = {arg1, arg2, arg3, arg4};
+    res = PQexecParams(conn,"insert into results values ($1, $2, $3, $4)",4,NULL,arguments,NULL,NULL,0);
+
     PQfinish(conn);
-
-    printf("c,%f,%f,%f,%f,%f,%f\n", t1, t2, t3, t4, t5, t6);
-
 
     return 0;
 }

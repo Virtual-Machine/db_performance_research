@@ -74,6 +74,12 @@ t6 = benchmark do
   end
 end
 
-puts "ruby,#{t1},#{t2},#{t3},#{t4},#{t5},#{t6}"
+now = Time.now
+conn.exec( "insert into results values ($1, $2, $3, $4)", ["ruby", now, "t1", t1] )
+conn.exec( "insert into results values ($1, $2, $3, $4)", ["ruby", now, "t2", t2] )
+conn.exec( "insert into results values ($1, $2, $3, $4)", ["ruby", now, "t3", t3] )
+conn.exec( "insert into results values ($1, $2, $3, $4)", ["ruby", now, "t4", t4] )
+conn.exec( "insert into results values ($1, $2, $3, $4)", ["ruby", now, "t5", t5] )
+conn.exec( "insert into results values ($1, $2, $3, $4)", ["ruby", now, "t6", t6] )
 
 conn.close
