@@ -19,6 +19,17 @@ SET default_tablespace = '';
 
 SET default_with_oids = false;
 
+
+CREATE TABLE public.results (
+    imp_name character varying(100),
+    run timestamp without time zone,
+    test character varying(5),
+    seconds numeric(19,6)
+);
+
+ALTER TABLE public.results OWNER TO user;
+
+
 DROP TABLE IF EXISTS contacts;
 
 CREATE TABLE public.contacts (
