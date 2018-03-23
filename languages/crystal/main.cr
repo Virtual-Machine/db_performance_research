@@ -1,21 +1,22 @@
 require "db"
 
 driver = ""
-{% if flag?(:db_pg) %}
-  require "pg"
-  driver = "pg"
-{% else %}
-  require "pq"
-  driver = "pq"
-{% end %}
-
-connection_string = "postgres://localhost:5432/test?prepared_statements=false&initial_pool_size=1&max_pool_size=1&max_idle_pool_size=1"
+connection_string = ""
 pool_size = "1"
 
 if ARGV.size > 0
   pool_size = ARGV[0]
-  connection_string = "postgres://localhost:5432/test?prepared_statements=false&initial_pool_size=#{pool_size}&max_pool_size=#{pool_size}&max_idle_pool_size=#{pool_size}"
 end
+
+{% if flag?(:db_pg) %}
+  require "pg"
+  driver = "pg"
+  connection_string = "postgres://localhost:5432/test?initial_pool_size=#{pool_size}&max_pool_size=#{pool_size}&max_idle_pool_size=#{pool_size}"
+{% else %}
+  require "pq"
+  driver = "pq"
+  connection_string = "postgres://localhost:5432/test?prepared_statements=false&initial_pool_size=#{pool_size}&max_pool_size=#{pool_size}&max_idle_pool_size=#{pool_size}"
+{% end %}
 
 def benchmark(&block) : String
   t1 = Time.now
