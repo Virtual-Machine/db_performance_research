@@ -1,0 +1,1 @@
+select id, f_id, f_bool, f_string, CAST(f_decimal as double precision) As f_decimal, f_date, f_time from example_records
