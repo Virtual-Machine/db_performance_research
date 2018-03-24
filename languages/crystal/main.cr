@@ -109,6 +109,7 @@ DB.open connection_string do |db|
           f_time = rs.read
         {% else %}
           f_date = rs.read(PQ::Date)
+          f_time = "..." #Not defined in rs using crystal-pq
         {% end %}
       end
     end

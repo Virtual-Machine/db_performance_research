@@ -15,6 +15,7 @@ query2 = File.read "sql/query2.sql"
 query3 = File.read "sql/query3.sql"
 query4 = File.read "sql/query4.sql"
 query5 = File.read "sql/query5.sql"
+query6 = File.read "sql/query6.sql"
 
 t1 = benchmark do
   LibPQ.exec conn, query1
@@ -81,6 +82,20 @@ t6 = benchmark do
   end
 end
 
+t7 = benchmark do
+  res = LibPQ.exec conn, query6
+  rows = LibPQ.ntuples res
+  rows.times do |i|
+    id = String.new(LibPQ.get_value res, i, 0)
+    f_id = String.new(LibPQ.get_value res, i, 1)
+    f_bool = String.new(LibPQ.get_value res, i, 2)
+    f_string = String.new(LibPQ.get_value res, i, 3)
+    f_decimal = String.new(LibPQ.get_value res, i, 4)
+    f_date = String.new(LibPQ.get_value res, i, 5)
+    f_time = String.new(LibPQ.get_value res, i, 6)
+  end
+end
+
 now = Time.now
 args = ["crystal-libpq".to_unsafe, now.to_s.to_unsafe, "t1".to_unsafe, t1.to_unsafe].to_unsafe
 LibPQ.exec_params conn, "insert into results values ($1, $2, $3, $4)", 4, nil, args, nil, nil, 0
@@ -93,6 +108,8 @@ LibPQ.exec_params conn, "insert into results values ($1, $2, $3, $4)", 4, nil, a
 args = ["crystal-libpq".to_unsafe, now.to_s.to_unsafe, "t5".to_unsafe, t5.to_unsafe].to_unsafe
 LibPQ.exec_params conn, "insert into results values ($1, $2, $3, $4)", 4, nil, args, nil, nil, 0
 args = ["crystal-libpq".to_unsafe, now.to_s.to_unsafe, "t6".to_unsafe, t6.to_unsafe].to_unsafe
+LibPQ.exec_params conn, "insert into results values ($1, $2, $3, $4)", 4, nil, args, nil, nil, 0
+args = ["crystal-libpq".to_unsafe, now.to_s.to_unsafe, "t7".to_unsafe, t7.to_unsafe].to_unsafe
 LibPQ.exec_params conn, "insert into results values ($1, $2, $3, $4)", 4, nil, args, nil, nil, 0
 
 LibPQ.finish conn
