@@ -18,6 +18,7 @@ query2 = File.read "sql/query2.sql"
 query3 = File.read "sql/query3.sql"
 query4 = File.read "sql/query4.sql"
 query5 = File.read "sql/query5.sql"
+query6 = File.read "sql/query6.sql"
 
 
 t1 = benchmark do
@@ -74,6 +75,14 @@ t6 = benchmark do
   end
 end
 
+t7 = benchmark do
+  conn.exec( query6 ) do |result|
+    result.each do |row|
+      id, f_id, f_bool, f_string, f_decimal, f_date, f_time = row.values_at('id', 'f_id', 'f_bool', 'f_string', 'f_decimal', 'f_date', 'f_time')
+    end
+  end
+end
+
 now = Time.now
 conn.exec( "insert into results values ($1, $2, $3, $4)", ["ruby", now, "t1", t1] )
 conn.exec( "insert into results values ($1, $2, $3, $4)", ["ruby", now, "t2", t2] )
@@ -81,5 +90,6 @@ conn.exec( "insert into results values ($1, $2, $3, $4)", ["ruby", now, "t3", t3
 conn.exec( "insert into results values ($1, $2, $3, $4)", ["ruby", now, "t4", t4] )
 conn.exec( "insert into results values ($1, $2, $3, $4)", ["ruby", now, "t5", t5] )
 conn.exec( "insert into results values ($1, $2, $3, $4)", ["ruby", now, "t6", t6] )
+conn.exec( "insert into results values ($1, $2, $3, $4)", ["ruby", now, "t6", t7] )
 
 conn.close

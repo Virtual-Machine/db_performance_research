@@ -198,6 +198,30 @@ void test6() {
   }
 }
 
+void test7() {
+    res = PQexec(conn, query6);
+    
+    if (PQresultStatus(res) != PGRES_TUPLES_OK) {
+        PQclear(res);
+        exit_nicely();
+    }
+
+    int rows = PQntuples(res);
+    
+    for(int i=0; i<rows; i++) {
+        char *id = PQgetvalue(res, i, 0);
+        char *f_id = PQgetvalue(res, i, 1);
+        char *f_bool = PQgetvalue(res, i, 2);
+        char *f_string = PQgetvalue(res, i, 3);
+        char *f_decimal = PQgetvalue(res, i, 4);
+        char *f_date = PQgetvalue(res, i, 5);
+        char *f_time = PQgetvalue(res, i, 6);
+    }
+  
+
+    PQclear(res);
+}
+
 void log_result(struct tm* info, char *name, double res){
     char arg1[2] = {0};
     sprintf(arg1, "%s", "c");
@@ -219,7 +243,7 @@ main(int argc, char **argv)
     query3 = load_file("sql/query3.sql");
     query4 = load_file("sql/query4.sql");
     query5 = load_file("sql/query5.sql");
-    query6 = load_file("sql/query5.sql");
+    query6 = load_file("sql/query6.sql");
 
     
     conn = PQconnectdb("dbname = test");
@@ -237,6 +261,7 @@ main(int argc, char **argv)
     double t4 = benchmark(&test4);
     double t5 = benchmark(&test5);
     double t6 = benchmark(&test6);
+    double t7 = benchmark(&test7);
 
     time_t now;
     time(&now);
@@ -249,6 +274,7 @@ main(int argc, char **argv)
     log_result(info, "t4", t4);
     log_result(info, "t5", t5);
     log_result(info, "t6", t6);
+    log_result(info, "t7", t7);
 
     PQfinish(conn);
 
