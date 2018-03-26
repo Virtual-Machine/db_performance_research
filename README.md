@@ -59,8 +59,7 @@ crystal run scripts/summary.cr
 Feedback is welcome in the issues. Feel free to leave comments or concerns.
 
 ### Caveats
-- NOTE : Benchmarks could be unfair across implementations currently, hoping to reduce this
-- Implementations without a database pool will use multiple temp connections as a workaround.
+- See CAVEATS.md
 
 
 ### Structure
