@@ -79,13 +79,16 @@ All implementations should be structured as follows to ensure comparisons remain
 
 ### Tests
 
-#### Simple Tests
+#### Simple Tests 1,000 records
 1. T1 - delete from contacts where name like 'a test %' (1000 record delete with wildcard search)
 2. T2 - select name, age from contacts order by age desc (1 select retrieving 1000 records into local variables)
 3. T3 - insert into contacts values ($1, $2) (1000 individual inserts using execution parameters)
 4. T4 - select name, age from contacts order by age asc (1 select retrieving 2000 records into local variables)
 5. T5 - select name, age from contacts where age = $1 (1000 individual selects using execution parameters)
 6. T6 - select name, age from contacts where age = $1 (1000 concurrent selects using execution parameters)
+
+#### Simple Tests 1,000,000 records
+7. T7 - select id, f_id, f_bool, f_string, CAST(f_decimal as double precision) As f_decimal, f_date, f_time from example_records (1000000 record select with multiple data types)
 
 
 
