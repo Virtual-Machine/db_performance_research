@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"time"
 
 	_ "github.com/lib/pq"
@@ -36,6 +37,10 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+	q7, err := ioutil.ReadFile("sql/query7.sql")
+	if err != nil {
+		panic(err)
+	}
 
 	query1 := string(q1)
 	query2 := string(q2)
@@ -43,6 +48,7 @@ func main() {
 	query4 := string(q4)
 	query5 := string(q5)
 	query6 := string(q6)
+	query7 := string(q7)
 
 	db, err := sql.Open("postgres", connStr)
 	if err != nil {
@@ -182,6 +188,30 @@ func main() {
 		}
 	})
 
+	t8 := benchmark(func() {
+		rows, err := db.Query(query7)
+		if err != nil {
+			panic(err)
+		}
+		defer rows.Close()
+		var sum int64
+		var f_id int64
+		for rows.Next() {
+			err := rows.Scan(&f_id)
+			if err != nil {
+				panic(err)
+			}
+			sum += f_id
+		}
+		if sum != 2249638468 {
+			log.Fatal("Invalid sum, something went wrong")
+		}
+		err = rows.Err()
+		if err != nil {
+			panic(err)
+		}
+	})
+
 	now := time.Now()
 	db.Exec("insert into results values ($1, $2, $3, $4)", "go-pg", now, "t1", t1)
 	db.Exec("insert into results values ($1, $2, $3, $4)", "go-pg", now, "t2", t2)
@@ -190,6 +220,7 @@ func main() {
 	db.Exec("insert into results values ($1, $2, $3, $4)", "go-pg", now, "t5", t5)
 	db.Exec("insert into results values ($1, $2, $3, $4)", "go-pg", now, "t6", t6)
 	db.Exec("insert into results values ($1, $2, $3, $4)", "go-pg", now, "t7", t7)
+	db.Exec("insert into results values ($1, $2, $3, $4)", "go-pg", now, "t8", t8)
 }
 
 func benchmark(test func()) float64 {
