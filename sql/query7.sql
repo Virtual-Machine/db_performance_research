@@ -1,0 +1,1 @@
+select f_id from example_records where f_bool = 't'

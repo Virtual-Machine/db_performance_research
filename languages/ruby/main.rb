@@ -19,6 +19,7 @@ query3 = File.read "sql/query3.sql"
 query4 = File.read "sql/query4.sql"
 query5 = File.read "sql/query5.sql"
 query6 = File.read "sql/query6.sql"
+query7 = File.read "sql/query7.sql"
 
 
 t1 = benchmark do
@@ -83,6 +84,19 @@ t7 = benchmark do
   end
 end
 
+t8 = benchmark do
+  conn.exec( query7 ) do |result|
+    sum = 0
+    result.each do |row|
+      f_id = row.values_at('f_id')
+      sum += f_id[0].to_i
+    end
+    if sum != 2249638468
+      throw Error.new "Invalid sum, something went wrong"
+    end
+  end
+end
+
 now = Time.now
 conn.exec( "insert into results values ($1, $2, $3, $4)", ["ruby", now, "t1", t1] )
 conn.exec( "insert into results values ($1, $2, $3, $4)", ["ruby", now, "t2", t2] )
@@ -90,6 +104,7 @@ conn.exec( "insert into results values ($1, $2, $3, $4)", ["ruby", now, "t3", t3
 conn.exec( "insert into results values ($1, $2, $3, $4)", ["ruby", now, "t4", t4] )
 conn.exec( "insert into results values ($1, $2, $3, $4)", ["ruby", now, "t5", t5] )
 conn.exec( "insert into results values ($1, $2, $3, $4)", ["ruby", now, "t6", t6] )
-conn.exec( "insert into results values ($1, $2, $3, $4)", ["ruby", now, "t6", t7] )
+conn.exec( "insert into results values ($1, $2, $3, $4)", ["ruby", now, "t7", t7] )
+conn.exec( "insert into results values ($1, $2, $3, $4)", ["ruby", now, "t8", t8] )
 
 conn.close
