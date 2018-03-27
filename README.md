@@ -88,6 +88,7 @@ All implementations should be structured as follows to ensure comparisons remain
 
 #### Simple Tests 1,000,000 records
 7. T7 - select id, f_id, f_bool, f_string, CAST(f_decimal as double precision) As f_decimal, f_date, f_time from example_records (1000000 record select with multiple data types)
+8. T8 - select f_id from example_records where f_bool = 't' (1 select with condition returning 500087 ints and then summing with integrity check)
 
 
 
