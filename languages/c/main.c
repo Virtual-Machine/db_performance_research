@@ -31,6 +31,7 @@ static char *query3;
 static char *query4;
 static char *query5;
 static char *query6;
+static char *query7;
 static PGconn *conn;
 static PGresult *res;
 
@@ -222,6 +223,32 @@ void test7() {
     PQclear(res);
 }
 
+void test8() {
+    res = PQexec(conn, query7);
+    
+    if (PQresultStatus(res) != PGRES_TUPLES_OK) {
+        PQclear(res);
+        exit_nicely();
+    }
+
+    int rows = PQntuples(res);
+    long long int sum = 0;
+    
+    for(int i=0; i<rows; i++) {
+        char *f_id = PQgetvalue(res, i, 0);
+        int num = atoi(f_id);
+        sum = sum + num;
+    }
+
+    if (sum != 2249638468){
+        printf("%s\n", "Invalid sum, something went wrong");
+        exit(0);
+    }
+  
+
+    PQclear(res);
+}
+
 void log_result(struct tm* info, char *name, double res){
     char arg1[2] = {0};
     sprintf(arg1, "%s", "c");
@@ -244,6 +271,7 @@ main(int argc, char **argv)
     query4 = load_file("sql/query4.sql");
     query5 = load_file("sql/query5.sql");
     query6 = load_file("sql/query6.sql");
+    query7 = load_file("sql/query7.sql");
 
     
     conn = PQconnectdb("dbname = test");
@@ -262,6 +290,7 @@ main(int argc, char **argv)
     double t5 = benchmark(&test5);
     double t6 = benchmark(&test6);
     double t7 = benchmark(&test7);
+    double t8 = benchmark(&test8);
 
     time_t now;
     time(&now);
@@ -275,6 +304,7 @@ main(int argc, char **argv)
     log_result(info, "t5", t5);
     log_result(info, "t6", t6);
     log_result(info, "t7", t7);
+    log_result(info, "t8", t8);
 
     PQfinish(conn);
 
