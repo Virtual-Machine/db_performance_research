@@ -34,6 +34,7 @@ query3 = File.read "sql/query3.sql"
 query4 = File.read "sql/query4.sql"
 query5 = File.read "sql/query5.sql"
 query6 = File.read "sql/query6.sql"
+query7 = File.read "sql/query7.sql"
 
 DB.open connection_string do |db|
   t1 = benchmark do
@@ -115,6 +116,19 @@ DB.open connection_string do |db|
     end
   end
 
+  t8 = benchmark do
+    db.query query7 do |rs|
+      sum = 0.to_i64
+      rs.each do
+        f_id = rs.read(Int32)
+        sum += f_id
+      end
+      if sum != 2249638468
+        raise Exception.new "Invalid sum, something went wrong"
+      end
+    end
+  end
+
   now = Time.now
   db.exec "insert into results values ($1, $2, $3, $4)", ["crystal-#{driver}-#{pool_size}", now, "t1", t1]
   db.exec "insert into results values ($1, $2, $3, $4)", ["crystal-#{driver}-#{pool_size}", now, "t2", t2]
@@ -123,4 +137,5 @@ DB.open connection_string do |db|
   db.exec "insert into results values ($1, $2, $3, $4)", ["crystal-#{driver}-#{pool_size}", now, "t5", t5]
   db.exec "insert into results values ($1, $2, $3, $4)", ["crystal-#{driver}-#{pool_size}", now, "t6", t6]
   db.exec "insert into results values ($1, $2, $3, $4)", ["crystal-#{driver}-#{pool_size}", now, "t7", t7]
+  db.exec "insert into results values ($1, $2, $3, $4)", ["crystal-#{driver}-#{pool_size}", now, "t8", t8]
 end

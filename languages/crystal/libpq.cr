@@ -16,6 +16,7 @@ query3 = File.read "sql/query3.sql"
 query4 = File.read "sql/query4.sql"
 query5 = File.read "sql/query5.sql"
 query6 = File.read "sql/query6.sql"
+query7 = File.read "sql/query7.sql"
 
 t1 = benchmark do
   LibPQ.exec conn, query1
@@ -96,6 +97,19 @@ t7 = benchmark do
   end
 end
 
+t8 = benchmark do
+  res = LibPQ.exec conn, query7
+  rows = LibPQ.ntuples res
+  sum = 0.to_i64
+  rows.times do |i|
+    f_id = String.new(LibPQ.get_value res, i, 0)
+    sum += f_id.to_i
+  end
+  if sum != 2249638468
+    raise Exception.new "Invalid sum, something went wrong"
+  end
+end
+
 now = Time.now
 args = ["crystal-libpq".to_unsafe, now.to_s.to_unsafe, "t1".to_unsafe, t1.to_unsafe].to_unsafe
 LibPQ.exec_params conn, "insert into results values ($1, $2, $3, $4)", 4, nil, args, nil, nil, 0
@@ -110,6 +124,8 @@ LibPQ.exec_params conn, "insert into results values ($1, $2, $3, $4)", 4, nil, a
 args = ["crystal-libpq".to_unsafe, now.to_s.to_unsafe, "t6".to_unsafe, t6.to_unsafe].to_unsafe
 LibPQ.exec_params conn, "insert into results values ($1, $2, $3, $4)", 4, nil, args, nil, nil, 0
 args = ["crystal-libpq".to_unsafe, now.to_s.to_unsafe, "t7".to_unsafe, t7.to_unsafe].to_unsafe
+LibPQ.exec_params conn, "insert into results values ($1, $2, $3, $4)", 4, nil, args, nil, nil, 0
+args = ["crystal-libpq".to_unsafe, now.to_s.to_unsafe, "t8".to_unsafe, t8.to_unsafe].to_unsafe
 LibPQ.exec_params conn, "insert into results values ($1, $2, $3, $4)", 4, nil, args, nil, nil, 0
 
 LibPQ.finish conn
